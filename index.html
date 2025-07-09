@@ -200,10 +200,10 @@
         
         // --- FIXED: Generic Gemini API Caller ---
         async function callGeminiAPI(payload) {
-            // NOTE: This function calls the Google AI API directly to fix the fetch error in the preview environment.
-            // The platform securely provides the API key.
+            // NOTE: This function calls the Google AI API directly. This works in the preview environment
+            // because the platform securely provides the API key.
             // For your live website (mannkoboli.life), you must use the Cloudflare Worker method
-            // and ensure your worker's CORS settings allow your domain.
+            // and ensure your worker's CORS settings allow requests from your domain.
             
             const { prompt, responseSchema, conversationHistory } = payload;
             
@@ -416,4 +416,5 @@
     </script>
 </body>
 </html>
+
 
