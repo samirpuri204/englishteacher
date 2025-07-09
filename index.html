@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -198,23 +198,47 @@
             cultureExplanation: document.getElementById('culture-explanation'),
         };
         
-        // --- Generic Gemini API Caller ---
-        async function callGeminiAPI(prompt, responseSchema) {
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }],
+        // --- FIXED: Generic Gemini API Caller ---
+        async function callGeminiAPI(payload) {
+            // NOTE: This function calls the Google AI API directly to fix the fetch error in the preview environment.
+            // The platform securely provides the API key.
+            // For your live website (mannkoboli.life), you must use the Cloudflare Worker method
+            // and ensure your worker's CORS settings allow your domain.
+            
+            const { prompt, responseSchema, conversationHistory } = payload;
+            
+            const contents = conversationHistory 
+                ? conversationHistory 
+                : [{ role: "user", parts: [{ text: prompt }] }];
+
+            const apiPayload = {
+                contents: contents,
                 generationConfig: {
                     responseMimeType: "application/json",
-                    responseSchema: responseSchema
-                }
+                    responseSchema: responseSchema,
+                },
             };
-            const apiKey = "";
+
+            const apiKey = ""; // This is securely provided by the environment.
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            if (!response.ok) throw new Error(`API call failed: ${response.status}`);
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(apiPayload)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`API call failed: ${errorText}`);
+            }
+            
             const result = await response.json();
+
             if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
                 return JSON.parse(result.candidates[0].content.parts[0].text);
             } else {
+                console.error("Unexpected response structure from API:", result);
                 throw new Error("Unexpected response structure from AI.");
             }
         }
@@ -229,7 +253,9 @@
             try {
                 const prompt = `You are a friendly English teacher for Nepali speakers. Analyze the Nepali sentence: "${nepaliText}". Provide: 1. A clear English translation. 2. A simple grammar breakdown in a mix of English and Nepali (using Devanagari script).`;
                 const schema = { type: "OBJECT", properties: { "english_translation": { "type": "STRING" }, "grammar_breakdown": { "type": "STRING" } }, required: ["english_translation", "grammar_breakdown"] };
-                const aiResponse = await callGeminiAPI(prompt, schema);
+                
+                const aiResponse = await callGeminiAPI({ prompt, responseSchema: schema });
+
                 elements.englishTranslation.textContent = aiResponse.english_translation;
                 elements.grammarExplanation.innerHTML = aiResponse.grammar_breakdown;
             } catch (error) {
@@ -262,7 +288,9 @@
             try {
                 const prompt = "Generate a single multiple-choice English grammar quiz question. The question and options must be entirely in English. Provide a question, 4 options (one correct), and the index of the correct answer (0-3).";
                 const schema = { type: "OBJECT", properties: { "question": { "type": "STRING" }, "options": { "type": "ARRAY", "items": { "type": "STRING" } }, "answer_index": { "type": "NUMBER" } }, required: ["question", "options", "answer_index"] };
-                const quizData = await callGeminiAPI(prompt, schema);
+                
+                const quizData = await callGeminiAPI({ prompt, responseSchema: schema });
+
                 currentQuizAnswer = quizData.answer_index;
                 
                 const questionEl = document.createElement('h3');
@@ -322,7 +350,9 @@
             try {
                 const prompt = `You are a friendly English speaker. Start a conversation with a Nepali learner about "${scenario}". Begin with a simple greeting or question. Respond in a mix of simple English and Nepali.`;
                 const schema = { type: "OBJECT", properties: { "response": { "type": "STRING" } }, required: ["response"] };
-                const aiResponse = await callGeminiAPI(prompt, schema);
+                
+                const aiResponse = await callGeminiAPI({ prompt, responseSchema: schema });
+
                 conversationHistory = [{role: 'user', parts: [{text: prompt}]}, {role: 'model', parts: [{text: aiResponse.response}]}];
                 addChatMessage(aiResponse.response, 'ai');
                 elements.chatInput.disabled = false;
@@ -344,13 +374,10 @@
             elements.sendChatBtn.disabled = true;
             
             try {
-                const payload = { contents: conversationHistory, generationConfig: { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { "response": { "type": "STRING" } }, required: ["response"]}}};
-                 const apiKey = "";
-                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                 const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                 if (!response.ok) throw new Error(`API call failed: ${response.status}`);
-                 const result = await response.json();
-                 const aiText = JSON.parse(result.candidates[0].content.parts[0].text).response;
+                const schema = { type: "OBJECT", properties: { "response": { "type": "STRING" } }, required: ["response"]};
+                const aiResponse = await callGeminiAPI({ conversationHistory: conversationHistory, responseSchema: schema });
+                
+                const aiText = aiResponse.response;
                 conversationHistory.push({role: 'model', parts: [{text: aiText}]});
                 addChatMessage(aiText, 'ai');
             } catch (error) {
@@ -374,7 +401,9 @@
             try {
                 const prompt = `As an English teacher for Nepali speakers, explain the cultural context, meaning, and usage of the English phrase: "${phrase}". Explain in a simple mix of English and Nepali.`;
                 const schema = { type: "OBJECT", properties: { "explanation": { "type": "STRING" } }, required: ["explanation"]};
-                const aiResponse = await callGeminiAPI(prompt, schema);
+
+                const aiResponse = await callGeminiAPI({ prompt, responseSchema: schema });
+
                 elements.cultureExplanation.innerHTML = aiResponse.explanation;
             } catch (error) {
                 console.error("Culture Error:", error);
@@ -387,3 +416,4 @@
     </script>
 </body>
 </html>
+
