@@ -198,30 +198,40 @@
             cultureExplanation: document.getElementById('culture-explanation'),
         };
         
-         async function callApi(payload) {
-                const apiKey = "AIzaSyBZ4QSKK_xSuPo_kiGD6OjqOCuiZqkqGlg";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        async function callGeminiAPI(payload) {
+    try {
+        const response = await fetch("https://samir-worker.samirpuri204.workers.dev/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error("API Error: " + errorText);
+        }
 
-                if (!response.ok) {
-                    const errorBody = await response.text();
-                    console.error("API Error Response:", errorBody);
-                    throw new Error(`API Error: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                if (data.candidates && data.candidates.length > 0 && data.candidates[0].content && data.candidates[0].content.parts.length > 0) {
-                    return data.candidates[0].content.parts[0].text;
-                } else {
-                    console.error("Invalid API response structure:", data);
-                    throw new Error("Invalid response from API");
-                }
-            }
+        const result = await response.json();
+
+        // Check if response structure contains parts[0].text
+        const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!text) {
+            throw new Error("Invalid response structure");
+        }
+
+        // Try parsing as JSON; fallback to raw if parsing fails
+        try {
+            return JSON.parse(text);
+        } catch {
+            return { rawText: text };
+        }
+    } catch (error) {
+        console.error("callGeminiAPI Error:", error);
+        throw error;
+    }
+}
         // --- Translator Logic ---
         elements.translateBtn.addEventListener('click', async () => {
             const nepaliText = elements.nepaliInput.value.trim();
