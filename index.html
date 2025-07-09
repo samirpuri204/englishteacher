@@ -198,51 +198,30 @@
             cultureExplanation: document.getElementById('culture-explanation'),
         };
         
-        // --- FIXED: Generic Gemini API Caller ---
-        async function callGeminiAPI(payload) {
-            // NOTE: This function calls the Google AI API directly. This works in the preview environment
-            // because the platform securely provides the API key.
-            // For your live website (mannkoboli.life), you must use the Cloudflare Worker method
-            // and ensure your worker's CORS settings allow requests from your domain.
-            
-            const { prompt, responseSchema, conversationHistory } = payload;
-            
-            const contents = conversationHistory 
-                ? conversationHistory 
-                : [{ role: "user", parts: [{ text: prompt }] }];
+         async function callApi(payload) {
+                const apiKey = "AIzaSyBZ4QSKK_xSuPo_kiGD6OjqOCuiZqkqGlg";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-            const apiPayload = {
-                contents: contents,
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: responseSchema,
-                },
-            };
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-            const apiKey = "AIzaSyDFkrd-NZO5KVbyaRUNexDL-NnTsH7biPA; // This is securely provided by the environment.
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(apiPayload)
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`API call failed: ${errorText}`);
+                if (!response.ok) {
+                    const errorBody = await response.text();
+                    console.error("API Error Response:", errorBody);
+                    throw new Error(`API Error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                if (data.candidates && data.candidates.length > 0 && data.candidates[0].content && data.candidates[0].content.parts.length > 0) {
+                    return data.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Invalid API response structure:", data);
+                    throw new Error("Invalid response from API");
+                }
             }
-            
-            const result = await response.json();
-
-            if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                return JSON.parse(result.candidates[0].content.parts[0].text);
-            } else {
-                console.error("Unexpected response structure from API:", result);
-                throw new Error("Unexpected response structure from AI.");
-            }
-        }
-
         // --- Translator Logic ---
         elements.translateBtn.addEventListener('click', async () => {
             const nepaliText = elements.nepaliInput.value.trim();
