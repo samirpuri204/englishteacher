@@ -1,0 +1,389 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI English Teacher Toolkit | Nepali to English</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.320.0/dist/umd/lucide.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .devanagari { font-family: 'Noto Sans Devanagari', sans-serif; }
+        .tool-card {
+            background-color: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+        .tool-header h2 { font-size: 1.5rem; font-weight: 700; }
+        .loader {
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .quiz-option {
+            transition: all 0.2s ease-in-out;
+            border: 2px solid #d1d5db;
+        }
+        .quiz-option:hover {
+            transform: translateY(-2px);
+            background-color: #eef2ff;
+            border-color: #6366f1;
+        }
+        .chat-bubble { max-width: 85%; }
+        .chat-bubble.user { background-color: #4f46e5; color: white; align-self: flex-end; border-radius: 1.25rem 1.25rem 0.25rem 1.25rem; }
+        .chat-bubble.ai { background-color: #e5e7eb; color: #1f2937; align-self: flex-start; border-radius: 1.25rem 1.25rem 1.25rem 0.25rem;}
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Main Container -->
+    <div id="app-container">
+        <!-- Toolkit Container -->
+        <div id="toolkit-container">
+            <div class="container mx-auto p-4 sm:p-6 md:p-8">
+                <!-- Header -->
+                <header class="mb-10 text-center">
+                    <h1 class="text-4xl md:text-5xl font-bold text-blue-800">AI English Toolkit</h1>
+                    <div class="mt-4 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                        <div class="bg-white/80 backdrop-blur-sm p-5 rounded-xl border">
+                            <h2 class="font-bold text-xl mb-2 text-slate-900">Welcome to your AI English Toolkit!</h2>
+                            <p class="text-slate-600">This platform is designed to help Nepali speakers learn English in an interactive and intuitive way. Use the tools below to translate sentences, practice conversations, take quizzes, and learn about cultural nuances.</p>
+                        </div>
+                        <div class="bg-white/80 backdrop-blur-sm p-5 rounded-xl border devanagari">
+                             <h2 class="font-bold text-xl mb-2 text-slate-900">AI अंग्रेजी टुलकिटमा स्वागत छ!</h2>
+                             <p class="text-slate-600">यो प्लेटफर्म नेपाली भाषीहरूलाई अन्तरक्रियात्मक र सहज तरिकाले अंग्रेजी सिक्न मद्दत गर्न डिजाइन गरिएको हो। वाक्य अनुवाद गर्न, कुराकानी अभ्यास गर्न, क्विज लिन, र सांस्कृतिक बारीकियांबारे जान्न तलका उपकरणहरू प्रयोग गर्नुहोस्।</p>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Toolkit Grid -->
+                <main class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <!-- Column 1 -->
+                    <div class="space-y-8">
+                        <!-- Translator Tool -->
+                        <div class="tool-card">
+                            <div class="tool-header"><i data-lucide="languages"></i><h2>Translator</h2></div>
+                            <textarea id="nepali-input" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 devanagari" rows="4" placeholder="नेपालीमा वाक्य लेख्नुहोस्..."></textarea>
+                            <button id="translate-btn" class="w-full mt-3 bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"><i data-lucide="sparkles"></i>Analyze with AI</button>
+                            <div id="translator-output" class="mt-4 hidden">
+                                <div id="loader-translator" class="flex justify-center py-4"><div class="loader"></div></div>
+                                <div id="results-container" class="hidden space-y-4">
+                                    <div>
+                                        <h4 class="font-semibold text-blue-800">English Translation</h4>
+                                        <p id="english-translation" class="text-lg bg-blue-50 p-3 rounded-md"></p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-green-800">Grammar Breakdown (व्याकरण विश्लेषण)</h4>
+                                        <div id="grammar-explanation" class="text-sm bg-green-50 p-3 rounded-md prose"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pronunciation Tool -->
+                        <div class="tool-card">
+                            <div class="tool-header"><i data-lucide="audio-lines"></i><h2>Pronunciation</h2></div>
+                            <p class="text-slate-600 mb-3 devanagari">कुनै पनि शब्द वा वाक्यांशको उच्चारण सुन्नुहोस्।</p>
+                            <div class="flex gap-2">
+                                <input type="text" id="pronunciation-input" class="w-full p-3 border border-slate-300 rounded-lg" placeholder="Type English or Nepali text...">
+                                <button id="pronounce-btn" class="bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 flex items-center justify-center"><i data-lucide="volume-2"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Culture Tool -->
+                        <div class="tool-card">
+                            <div class="tool-header"><i data-lucide="globe-2"></i><h2>Cultural Context</h2></div>
+                            <p class="text-slate-600 mb-3 devanagari">अंग्रेजी मुहावराको अर्थ र प्रयोग बुझ्नुहोस्।</p>
+                            <div class="flex gap-2">
+                                <input type="text" id="culture-input" class="w-full p-3 border border-slate-300 rounded-lg" placeholder="e.g., 'break a leg'">
+                                <button id="get-culture-btn" class="bg-teal-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-700">Explain</button>
+                            </div>
+                            <div id="loader-culture" class="flex justify-center py-4 hidden"><div class="loader"></div></div>
+                            <div id="culture-explanation" class="mt-4 text-base bg-teal-50 p-3 rounded-md prose hidden"></div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="space-y-8">
+                        <!-- Quiz Tool -->
+                        <div class="tool-card">
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="tool-header !mb-0"><i data-lucide="file-question"></i><h2>Quiz</h2></div>
+                                <div class="text-lg font-bold text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full">Score: <span id="score">0</span></div>
+                            </div>
+                            <div id="quiz-area" class="space-y-3"></div>
+                            <div id="loader-quiz" class="flex justify-center py-4 hidden"><div class="loader"></div></div>
+                            <button id="next-question-btn" class="w-full mt-4 bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition">Next Question</button>
+                        </div>
+
+                        <!-- Conversation Tool -->
+                        <div class="tool-card">
+                            <div class="tool-header"><i data-lucide="messages-square"></i><h2>Conversations</h2></div>
+                             <select id="conversation-scenario" class="w-full p-3 border border-slate-300 rounded-lg mb-3">
+                                 <option value="ordering_coffee">Ordering Coffee</option>
+                                 <option value="at_the_airport">At the Airport</option>
+                                 <option value="a_job_interview">a Job Interview</option>
+                             </select>
+                             <div id="chat-window" class="h-80 border rounded-lg p-4 overflow-y-auto flex flex-col gap-4 bg-slate-50 mb-3">
+                                <div class="text-center text-slate-500 devanagari">परिदृश्य छान्नुहोस् र कुराकानी सुरु गर्नुहोस्।</div>
+                             </div>
+                             <div class="flex gap-2">
+                                 <input type="text" id="chat-input" class="w-full p-3 border border-slate-300 rounded-lg" placeholder="Type your response..." disabled>
+                                 <button id="send-chat-btn" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 disabled:bg-slate-300" disabled><i data-lucide="send"></i></button>
+                             </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Initial Load ---
+        window.onload = () => {
+            lucide.createIcons();
+            generateQuizQuestion();
+        };
+
+        // --- Core State and Elements ---
+        let score = 0;
+        let currentQuizAnswer = null;
+        let conversationHistory = [];
+
+        const elements = {
+            nepaliInput: document.getElementById('nepali-input'),
+            translateBtn: document.getElementById('translate-btn'),
+            translatorOutput: document.getElementById('translator-output'),
+            loaderTranslator: document.getElementById('loader-translator'),
+            resultsContainer: document.getElementById('results-container'),
+            englishTranslation: document.getElementById('english-translation'),
+            grammarExplanation: document.getElementById('grammar-explanation'),
+            pronunciationInput: document.getElementById('pronunciation-input'),
+            pronounceBtn: document.getElementById('pronounce-btn'),
+            quizArea: document.getElementById('quiz-area'),
+            scoreDisplay: document.getElementById('score'),
+            nextQuestionBtn: document.getElementById('next-question-btn'),
+            loaderQuiz: document.getElementById('loader-quiz'),
+            conversationScenario: document.getElementById('conversation-scenario'),
+            chatWindow: document.getElementById('chat-window'),
+            chatInput: document.getElementById('chat-input'),
+            sendChatBtn: document.getElementById('send-chat-btn'),
+            cultureInput: document.getElementById('culture-input'),
+            getCultureBtn: document.getElementById('get-culture-btn'),
+            loaderCulture: document.getElementById('loader-culture'),
+            cultureExplanation: document.getElementById('culture-explanation'),
+        };
+        
+        // --- Generic Gemini API Caller ---
+        async function callGeminiAPI(prompt, responseSchema) {
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: responseSchema
+                }
+            };
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            if (!response.ok) throw new Error(`API call failed: ${response.status}`);
+            const result = await response.json();
+            if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                return JSON.parse(result.candidates[0].content.parts[0].text);
+            } else {
+                throw new Error("Unexpected response structure from AI.");
+            }
+        }
+
+        // --- Translator Logic ---
+        elements.translateBtn.addEventListener('click', async () => {
+            const nepaliText = elements.nepaliInput.value.trim();
+            if (!nepaliText) return;
+            elements.translatorOutput.classList.remove('hidden');
+            elements.loaderTranslator.classList.remove('hidden');
+            elements.resultsContainer.classList.add('hidden');
+            try {
+                const prompt = `You are a friendly English teacher for Nepali speakers. Analyze the Nepali sentence: "${nepaliText}". Provide: 1. A clear English translation. 2. A simple grammar breakdown in a mix of English and Nepali (using Devanagari script).`;
+                const schema = { type: "OBJECT", properties: { "english_translation": { "type": "STRING" }, "grammar_breakdown": { "type": "STRING" } }, required: ["english_translation", "grammar_breakdown"] };
+                const aiResponse = await callGeminiAPI(prompt, schema);
+                elements.englishTranslation.textContent = aiResponse.english_translation;
+                elements.grammarExplanation.innerHTML = aiResponse.grammar_breakdown;
+            } catch (error) {
+                console.error("Translator Error:", error);
+                elements.englishTranslation.textContent = "Sorry, an error occurred.";
+            } finally {
+                elements.loaderTranslator.classList.add('hidden');
+                elements.resultsContainer.classList.remove('hidden');
+            }
+        });
+
+        // --- Pronunciation Logic ---
+        elements.pronounceBtn.addEventListener('click', () => {
+            const textToSpeak = elements.pronunciationInput.value.trim();
+            if (!textToSpeak) return;
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = /[a-zA-Z]/.test(textToSpeak) ? 'en-US' : 'ne-NP';
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Sorry, your browser doesn't support text-to-speech.");
+            }
+        });
+
+        // --- Quiz Logic ---
+        async function generateQuizQuestion() {
+            elements.quizArea.innerHTML = '';
+            elements.loaderQuiz.classList.remove('hidden');
+            elements.nextQuestionBtn.disabled = true;
+            try {
+                const prompt = "Generate a single multiple-choice English grammar quiz question. The question and options must be entirely in English. Provide a question, 4 options (one correct), and the index of the correct answer (0-3).";
+                const schema = { type: "OBJECT", properties: { "question": { "type": "STRING" }, "options": { "type": "ARRAY", "items": { "type": "STRING" } }, "answer_index": { "type": "NUMBER" } }, required: ["question", "options", "answer_index"] };
+                const quizData = await callGeminiAPI(prompt, schema);
+                currentQuizAnswer = quizData.answer_index;
+                
+                const questionEl = document.createElement('h3');
+                questionEl.className = 'text-lg font-semibold mb-3';
+                questionEl.textContent = quizData.question;
+                elements.quizArea.appendChild(questionEl);
+
+                const optionsEl = document.createElement('div');
+                optionsEl.className = 'space-y-2';
+                quizData.options.forEach((opt, index) => {
+                    const optBtn = document.createElement('button');
+                    optBtn.className = 'quiz-option w-full p-3 border-2 rounded-lg text-left';
+                    optBtn.textContent = opt;
+                    optBtn.onclick = () => checkAnswer(index, optBtn);
+                    optionsEl.appendChild(optBtn);
+                });
+                elements.quizArea.appendChild(optionsEl);
+            } catch (error) {
+                console.error("Quiz Error:", error);
+                elements.quizArea.innerHTML = `<p class="text-red-500">Could not load question.</p>`;
+            } finally {
+                elements.loaderQuiz.classList.add('hidden');
+                elements.nextQuestionBtn.disabled = false;
+            }
+        }
+        function checkAnswer(selectedIndex, btn) {
+            document.querySelectorAll('.quiz-option').forEach(b => {
+                b.disabled = true;
+                b.classList.remove('hover:bg-indigo-100');
+            });
+            if (selectedIndex === currentQuizAnswer) {
+                btn.classList.add('bg-green-500', 'text-white', 'border-green-500');
+                score++;
+                elements.scoreDisplay.textContent = score;
+            } else {
+                btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
+                document.querySelectorAll('.quiz-option')[currentQuizAnswer].classList.add('bg-green-500', 'text-white', 'border-green-500');
+            }
+        }
+        elements.nextQuestionBtn.addEventListener('click', generateQuizQuestion);
+
+        // --- Conversation Logic ---
+        function addChatMessage(message, sender) {
+            const bubble = document.createElement('div');
+            bubble.className = `chat-bubble p-3 px-4 rounded-lg ${sender}`;
+            bubble.textContent = message;
+            elements.chatWindow.appendChild(bubble);
+            elements.chatWindow.scrollTop = elements.chatWindow.scrollHeight;
+        }
+
+        elements.conversationScenario.addEventListener('change', async () => {
+            const scenario = elements.conversationScenario.options[elements.conversationScenario.selectedIndex].text;
+            elements.chatWindow.innerHTML = '';
+            addChatMessage(`Starting a conversation about ${scenario}. The AI will now greet you.`, 'ai');
+            elements.chatInput.disabled = true;
+            elements.sendChatBtn.disabled = true;
+            try {
+                const prompt = `You are a friendly English speaker. Start a conversation with a Nepali learner about "${scenario}". Begin with a simple greeting or question. Respond in a mix of simple English and Nepali.`;
+                const schema = { type: "OBJECT", properties: { "response": { "type": "STRING" } }, required: ["response"] };
+                const aiResponse = await callGeminiAPI(prompt, schema);
+                conversationHistory = [{role: 'user', parts: [{text: prompt}]}, {role: 'model', parts: [{text: aiResponse.response}]}];
+                addChatMessage(aiResponse.response, 'ai');
+                elements.chatInput.disabled = false;
+                elements.sendChatBtn.disabled = false;
+            } catch (error) {
+                console.error("Conversation Start Error:", error);
+                addChatMessage("Sorry, I can't start the conversation right now.", 'ai');
+            }
+        });
+        
+        const handleChatSend = async () => {
+            const userInput = elements.chatInput.value.trim();
+            if (!userInput) return;
+            
+            conversationHistory.push({role: 'user', parts: [{text: userInput}]});
+            addChatMessage(userInput, 'user');
+            elements.chatInput.value = '';
+            elements.chatInput.disabled = true;
+            elements.sendChatBtn.disabled = true;
+            
+            try {
+                const payload = { contents: conversationHistory, generationConfig: { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { "response": { "type": "STRING" } }, required: ["response"]}}};
+                 const apiKey = "";
+                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                 const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                 if (!response.ok) throw new Error(`API call failed: ${response.status}`);
+                 const result = await response.json();
+                 const aiText = JSON.parse(result.candidates[0].content.parts[0].text).response;
+                conversationHistory.push({role: 'model', parts: [{text: aiText}]});
+                addChatMessage(aiText, 'ai');
+            } catch (error) {
+                console.error("Chat Error:", error);
+                addChatMessage("Sorry, I had a problem responding. Please try again.", 'ai');
+            } finally {
+                elements.chatInput.disabled = false;
+                elements.sendChatBtn.disabled = false;
+                elements.chatInput.focus();
+            }
+        };
+        elements.sendChatBtn.addEventListener('click', handleChatSend);
+        elements.chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleChatSend(); });
+
+        // --- Culture Logic ---
+        elements.getCultureBtn.addEventListener('click', async () => {
+            const phrase = elements.cultureInput.value.trim();
+            if (!phrase) return;
+            elements.loaderCulture.classList.remove('hidden');
+            elements.cultureExplanation.classList.add('hidden');
+            try {
+                const prompt = `As an English teacher for Nepali speakers, explain the cultural context, meaning, and usage of the English phrase: "${phrase}". Explain in a simple mix of English and Nepali.`;
+                const schema = { type: "OBJECT", properties: { "explanation": { "type": "STRING" } }, required: ["explanation"]};
+                const aiResponse = await callGeminiAPI(prompt, schema);
+                elements.cultureExplanation.innerHTML = aiResponse.explanation;
+            } catch (error) {
+                console.error("Culture Error:", error);
+                elements.cultureExplanation.innerHTML = `<p class="text-red-500">Sorry, an error occurred.</p>`;
+            } finally {
+                elements.loaderCulture.classList.add('hidden');
+                elements.cultureExplanation.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
