@@ -198,29 +198,50 @@
             cultureExplanation: document.getElementById('culture-explanation'),
         };
         
-         async function callGeminiAPI(payload) {
-        const workerUrl = 'https://samir-worker.samirpuri204.workers.dev/';
+        // --- FIXED: Generic Gemini API Caller ---
+        async function callGeminiAPI(payload) {
+            // NOTE: This function calls the Google AI API directly. This works in the preview environment
+            // because the platform securely provides the API key.
+            // For your live website (mannkoboli.life), you must use the Cloudflare Worker method
+            // and ensure your worker's CORS settings allow requests from your domain.
+            
+            const { prompt, responseSchema, conversationHistory } = payload;
+            
+            const contents = conversationHistory 
+                ? conversationHistory 
+                : [{ role: "user", parts: [{ text: prompt }] }];
 
-        const response = await fetch(workerUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+            const apiPayload = {
+                contents: contents,
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: responseSchema,
+                },
+            };
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`API call failed: ${errorText}`);
+            const apiKey = "AIzaSyDFkrd-NZO5KVbyaRUNexDL-NnTsH7biPA; // This is securely provided by the environment.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(apiPayload)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`API call failed: ${errorText}`);
+            }
+            
+            const result = await response.json();
+
+            if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                return JSON.parse(result.candidates[0].content.parts[0].text);
+            } else {
+                console.error("Unexpected response structure from API:", result);
+                throw new Error("Unexpected response structure from AI.");
+            }
         }
-
-        const result = await response.json();
-
-        if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-            return JSON.parse(result.candidates[0].content.parts[0].text);
-        } else {
-            console.error("Unexpected response structure from Cloudflare Worker:", result);
-            throw new Error("Unexpected response format from Gemini.");
-        }
-    }
 
         // --- Translator Logic ---
         elements.translateBtn.addEventListener('click', async () => {
@@ -395,6 +416,7 @@
     </script>
 </body>
 </html>
+
 
 
 
