@@ -1,193 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-adsense-account" content="ca-pub-4590847087721354">    <meta charset="UTF-8">
+    <meta name="google-adsense-account" content="ca-pub-4590847087721354">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI English Teacher Toolkit | Nepali to English</title>
+    <title>AI English Toolkit | Learn English with AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4590847087721354"
-     crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.320.0/dist/umd/lucide.min.js"></script>
     <style>
         body {
             font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
-            background-color: #f1f5f9;
+            background-color: #f8f9fa;
+            color: #111827;
         }
         .devanagari { font-family: 'Noto Sans Devanagari', sans-serif; }
+        
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #111827;
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #374151;
+        }
+        .btn-primary .arrow-icon {
+            transition: transform 0.3s ease;
+        }
+        .btn-primary:hover .arrow-icon {
+            transform: translateX(3px);
+        }
+
         .tool-card {
             background-color: white;
             border-radius: 1.5rem;
             padding: 1.5rem;
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border: 1px solid #e5e7eb;
             transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
         }
         .tool-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.05);
+            border-color: #d1d5db;
         }
         .tool-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            color: #1e3a8a;
+            color: #111827;
             margin-bottom: 1rem;
         }
-        .tool-header h2 { font-size: 1.5rem; font-weight: 700; }
+        .tool-header h2 { font-size: 1.25rem; font-weight: 700; }
+
         .loader {
             border: 4px solid #e5e7eb;
-            border-top: 4px solid #3b82f6;
+            border-top: 4px solid #4f46e5;
             border-radius: 50%;
             width: 32px;
             height: 32px;
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
         .quiz-option {
             transition: all 0.2s ease-in-out;
-            border: 2px solid #d1d5db;
+            border: 2px solid #e5e7eb;
+            background-color: #f9fafb;
         }
-        .quiz-option:hover {
-            transform: translateY(-2px);
-            background-color: #eef2ff;
-            border-color: #6366f1;
+        .quiz-option:hover:not(:disabled) {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
         }
+        
         .chat-bubble { max-width: 85%; }
-        .chat-bubble.user { background-color: #4f46e5; color: white; align-self: flex-end; border-radius: 1.25rem 1.25rem 0.25rem 1.25rem; }
+        .chat-bubble.user { background-color: #111827; color: white; align-self: flex-end; border-radius: 1.25rem 1.25rem 0.25rem 1.25rem; }
         .chat-bubble.ai { background-color: #e5e7eb; color: #1f2937; align-self: flex-start; border-radius: 1.25rem 1.25rem 1.25rem 0.25rem;}
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #fecaca;
+        }
+        #ad-container {
+            min-height: 50px;
+            margin: 2rem auto;
+            max-width: 968px;
+        }
     </style>
 </head>
-<body class="text-slate-800">
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4590847087721354"
-     crossorigin="anonymous"></script>
-<!-- Samir -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-4590847087721354"
-     data-ad-slot="9051563707"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+<body class="antialiased">
 
-    <!-- Main Container -->
     <div id="app-container">
-        <!-- Toolkit Container -->
-        <div id="toolkit-container">
-            <div class="container mx-auto p-4 sm:p-6 md:p-8">
-                <!-- Header -->
-                <header class="mb-10 text-center">
-                    <h1 class="text-4xl md:text-5xl font-bold text-blue-800">AI English Toolkit</h1>
-                    <div class="mt-4 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-                        <div class="bg-white/80 backdrop-blur-sm p-5 rounded-xl border">
-                            <h2 class="font-bold text-xl mb-2 text-slate-900">Welcome to your AI English Toolkit!</h2>
-                            <p class="text-slate-600">This platform is designed to help Nepali speakers learn English in an interactive and intuitive way. Use the tools below to translate sentences, practice conversations, take quizzes, and learn about cultural nuances.</p>
-                        </div>
-                        <div class="bg-white/80 backdrop-blur-sm p-5 rounded-xl border devanagari">
-                             <h2 class="font-bold text-xl mb-2 text-slate-900">AI अंग्रेजी टुलकिटमा स्वागत छ!</h2>
-                             <p class="text-slate-600">यो प्लेटफर्म नेपाली भाषीहरूलाई अन्तरक्रियात्मक र सहज तरिकाले अंग्रेजी सिक्न मद्दत गर्न डिजाइन गरिएको हो। वाक्य अनुवाद गर्न, कुराकानी अभ्यास गर्न, क्विज लिन, र सांस्कृतिक बारीकियांबारे जान्न तलका उपकरणहरू प्रयोग गर्नुहोस्।</p>
+        <div class="container mx-auto p-4 sm:p-6 md:p-8">
+            <!-- Header -->
+            <header class="flex justify-between items-center py-4 mb-12">
+                <a href="#" class="flex items-center gap-2 text-xl font-bold">
+                    <i data-lucide="sparkles" class="text-indigo-600"></i>
+                    <span>AI Toolkit</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-6 text-slate-600 font-medium">
+                    <a href="#tools" class="hover:text-slate-900">Features</a>
+                    <a href="#how-to-use" class="hover:text-slate-900">How It Works</a>
+                </nav>
+                <a href="#tools" class="btn-primary">
+                    <span>Get Started</span>
+                    <i data-lucide="arrow-right" class="arrow-icon w-5 h-5"></i>
+                </a>
+            </header>
+
+            <!-- Hero Section -->
+            <section class="text-center mb-20">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+                    Revolutionizing English Learning <br> with AI-powered Tools
+                </h1>
+                <p class="max-w-2xl mx-auto text-slate-600 text-lg mb-8">
+                    From grammar and translation to conversational practice, our toolkit provides everything you need to master English, tailored for Nepali speakers.
+                </p>
+                <div class="flex justify-center items-center gap-4">
+                     <a href="#tools" class="btn-primary">
+                        <span>Explore Tools</span>
+                        <i data-lucide="arrow-down" class="arrow-icon w-5 h-5"></i>
+                    </a>
+                    <div class="flex items-center -space-x-2">
+                        <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white" src="https://placehold.co/40x40/E2E8F0/4A5568?text=A" alt="User A">
+                        <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white" src="https://placehold.co/40x40/CBD5E0/2D3748?text=B" alt="User B">
+                        <div class="h-10 w-10 rounded-full ring-2 ring-white bg-slate-200 flex items-center justify-center text-slate-600 font-semibold text-sm">1k+</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ad container -->
+            <div id="ad-container"></div>
+            
+            <!-- Tools Grid -->
+            <main id="tools" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start mb-20">
+                <!-- Translator Tool -->
+                <div class="tool-card lg:col-span-2">
+                    <div class="tool-header"><i data-lucide="languages"></i><h2>Translator</h2></div>
+                    <textarea id="nepali-input" class="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 devanagari" rows="4" placeholder="नेपालीमा वाक्य लेख्नुहोस्..."></textarea>
+                    <button id="translate-btn" class="w-full mt-3 bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center gap-2 disabled:bg-slate-400"><i data-lucide="sparkles"></i>Analyze with AI</button>
+                    <div id="translator-output" class="mt-4">
+                        <div id="loader-translator" class="flex justify-center py-4 hidden"><div class="loader"></div></div>
+                        <div id="results-container" class="space-y-4">
+                            <h4 class="font-semibold">English Translation</h4>
+                            <p id="english-translation" class="text-lg bg-slate-50 p-3 rounded-md">My name is Samir.</p>
+                            <h4 class="font-semibold">Grammar Breakdown (व्याकरण विश्लेषण)</h4>
+                            <div id="grammar-explanation" class="text-sm bg-slate-50 p-3 rounded-md prose">
+                                This is a simple declarative sentence. <br> - <strong>My name</strong> (मेरो नाम) - Subject <br> - <strong>is</strong> (हो) - Verb <br> - <strong>Samir</strong> (समिर) - Object
+                            </div>
                         </div>
                     </div>
-                </header>
+                </div>
 
-                <!-- Toolkit Grid -->
-                <main class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                    <!-- Column 1 -->
-                    <div class="space-y-8">
-                        <!-- Translator Tool -->
-                        <div class="tool-card">
-                            <div class="tool-header"><i data-lucide="languages"></i><h2>Translator</h2></div>
-                            <textarea id="nepali-input" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 devanagari" rows="4" placeholder="नेपालीमा वाक्य लेख्नुहोस्..."></textarea>
-                            <button id="translate-btn" class="w-full mt-3 bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"><i data-lucide="sparkles"></i>Analyze with AI</button>
-                            <div id="translator-output" class="mt-4 hidden">
-                                <div id="loader-translator" class="flex justify-center py-4"><div class="loader"></div></div>
-                                <div id="results-container" class="hidden space-y-4">
-                                    <div>
-                                        <h4 class="font-semibold text-blue-800">English Translation</h4>
-                                        <p id="english-translation" class="text-lg bg-blue-50 p-3 rounded-md"></p>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-green-800">Grammar Breakdown (व्याकरण विश्लेषण)</h4>
-                                        <div id="grammar-explanation" class="text-sm bg-green-50 p-3 rounded-md prose"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pronunciation Tool -->
-                        <div class="tool-card">
-                            <div class="tool-header"><i data-lucide="audio-lines"></i><h2>Pronunciation</h2></div>
-                            <p class="text-slate-600 mb-3 devanagari">कुनै पनि शब्द वा वाक्यांशको उच्चारण सुन्नुहोस्।</p>
-                            <div class="flex gap-2">
-                                <input type="text" id="pronunciation-input" class="w-full p-3 border border-slate-300 rounded-lg" placeholder="Type English or Nepali text...">
-                                <button id="pronounce-btn" class="bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 flex items-center justify-center"><i data-lucide="volume-2"></i></button>
-                            </div>
-                        </div>
-
-                        <!-- Culture Tool -->
-                        <div class="tool-card">
-                            <div class="tool-header"><i data-lucide="globe-2"></i><h2>Cultural Context</h2></div>
-                            <p class="text-slate-600 mb-3 devanagari">अंग्रेजी मुहावराको अर्थ र प्रयोग बुझ्नुहोस्।</p>
-                            <div class="flex gap-2">
-                                <input type="text" id="culture-input" class="w-full p-3 border border-slate-300 rounded-lg" placeholder="e.g., 'break a leg'">
-                                <button id="get-culture-btn" class="bg-teal-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-700">Explain</button>
-                            </div>
-                            <div id="loader-culture" class="flex justify-center py-4 hidden"><div class="loader"></div></div>
-                            <div id="culture-explanation" class="mt-4 text-base bg-teal-50 p-3 rounded-md prose hidden"></div>
-                        </div>
+                <!-- Quiz Tool -->
+                <div class="tool-card row-span-2">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="tool-header !mb-0"><i data-lucide="file-question"></i><h2>Quiz</h2></div>
+                        <div class="text-lg font-bold text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full">Score: <span id="score">0</span></div>
                     </div>
+                    <div id="quiz-area" class="space-y-3"></div>
+                    <div id="loader-quiz" class="flex justify-center py-4 hidden"><div class="loader"></div></div>
+                    <button id="next-question-btn" class="w-full mt-4 bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition disabled:bg-slate-400">Next Question</button>
+                </div>
 
-                    <!-- Column 2 -->
-                    <div class="space-y-8">
-                        <!-- Quiz Tool -->
-                        <div class="tool-card">
-                            <div class="flex justify-between items-center mb-4">
-                                <div class="tool-header !mb-0"><i data-lucide="file-question"></i><h2>Quiz</h2></div>
-                                <div class="text-lg font-bold text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full">Score: <span id="score">0</span></div>
-                            </div>
-                            <div id="quiz-area" class="space-y-3"></div>
-                            <div id="loader-quiz" class="flex justify-center py-4 hidden"><div class="loader"></div></div>
-                            <button id="next-question-btn" class="w-full mt-4 bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition">Next Question</button>
-                        </div>
-
-                        <!-- Conversation Tool -->
-                        <div class="tool-card">
-                            <div class="tool-header"><i data-lucide="messages-square"></i><h2>Conversations</h2></div>
-                             <select id="conversation-scenario" class="w-full p-3 border border-slate-300 rounded-lg mb-3">
-                                 <option value="ordering_coffee">Ordering Coffee</option>
-                                 <option value="at_the_airport">At the Airport</option>
-                                 <option value="a_job_interview">a Job Interview</option>
-                             </select>
-                             <div id="chat-window" class="h-80 border rounded-lg p-4 overflow-y-auto flex flex-col gap-4 bg-slate-50 mb-3">
-                                <div class="text-center text-slate-500 devanagari">परिदृश्य छान्नुहोस् र कुराकानी सुरु गर्नुहोस्।</div>
-                             </div>
-                             <div class="flex gap-2">
-                                 <input type="text" id="chat-input" class="w-full p-3 border border-slate-300 rounded-lg" placeholder="Type your response..." disabled>
-                                 <button id="send-chat-btn" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 disabled:bg-slate-300" disabled><i data-lucide="send"></i></button>
-                             </div>
-                        </div>
+                <!-- Pronunciation & Culture Tools -->
+                <div class="tool-card">
+                    <div class="tool-header"><i data-lucide="audio-lines"></i><h2>Pronunciation</h2></div>
+                    <div class="flex gap-2">
+                        <input type="text" id="pronunciation-input" class="w-full p-3 border border-slate-200 rounded-lg" placeholder="Type any text...">
+                        <button id="pronounce-btn" class="bg-slate-800 text-white p-3 rounded-lg hover:bg-slate-700 flex items-center justify-center"><i data-lucide="volume-2"></i></button>
                     </div>
-                </main>
-            </div>
+                    <div id="pronunciation-error" class="mt-2 text-red-600 text-sm hidden"></div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-header"><i data-lucide="globe-2"></i><h2>Cultural Context</h2></div>
+                    <div class="flex gap-2">
+                        <input type="text" id="culture-input" class="w-full p-3 border border-slate-200 rounded-lg" placeholder="e.g., 'break a leg'">
+                        <button id="get-culture-btn" class="bg-slate-800 text-white font-bold py-2 px-4 rounded-lg hover:bg-slate-700 disabled:bg-slate-400">Explain</button>
+                    </div>
+                    <div id="loader-culture" class="flex justify-center py-4 hidden"><div class="loader"></div></div>
+                    <div id="culture-explanation" class="mt-4 text-base bg-slate-50 p-3 rounded-md prose hidden"></div>
+                </div>
+                
+                <!-- Conversation Tool -->
+                <div class="tool-card lg:col-span-3">
+                    <div class="tool-header"><i data-lucide="messages-square"></i><h2>Conversations</h2></div>
+                    <select id="conversation-scenario" class="w-full p-3 border border-slate-200 rounded-lg mb-3">
+                         <option value="ordering_coffee">Ordering Coffee</option>
+                         <option value="at_the_airport">At the Airport</option>
+                         <option value="a_job_interview">A Job Interview</option>
+                         <option value="making_friends">Making Friends</option>
+                    </select>
+                    <div id="chat-window" class="h-80 border rounded-lg p-4 overflow-y-auto flex flex-col gap-4 bg-slate-50 mb-3">
+                         <div class="text-center text-slate-500 devanagari">परिदृश्य छान्नुहोस् र कुराकानी सुरु गर्नुहोस्।</div>
+                    </div>
+                    <div class="flex gap-2">
+                         <input type="text" id="chat-input" class="w-full p-3 border border-slate-200 rounded-lg" placeholder="Type your response..." disabled>
+                         <button id="send-chat-btn" class="bg-slate-800 text-white p-3 rounded-lg hover:bg-slate-700 disabled:bg-slate-300" disabled><i data-lucide="send"></i></button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- High-Value Static Content for AdSense -->
+            <section id="how-to-use" class="mb-10 p-6 bg-white rounded-2xl border">
+                <h2 class="text-2xl font-bold text-slate-800 mb-3">How Our AI Tools Work</h2>
+                <p class="text-slate-600 mb-4">This page provides several AI-powered tools to help you master English. Here’s how to get the most out of them:</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-600">
+                    <li><strong>Translator:</strong> Type a sentence in Nepali to see its English translation and a detailed grammar breakdown. This helps you understand sentence structure.</li>
+                    <li><strong>Quiz:</strong> Test your knowledge with an endless supply of grammar and vocabulary questions. A great way to learn and track your progress!</li>
+                    <li><strong>Conversations:</strong> Practice real-world dialogues with an AI partner. Choose a scenario like ordering coffee or a job interview to build your confidence.</li>
+                </ul>
+            </section>
         </div>
     </div>
 
     <script>
-        // --- Initial Load ---
-        window.onload = () => {
+        // --- App Initialization ---
+        window.onload = () => { initializeApp(); };
+
+        async function initializeApp() {
             lucide.createIcons();
-            generateQuizQuestion();
-        };
+            const quizPromise = generateQuizQuestion();
+            const conversationPromise = startInitialConversation();
+            try {
+                await Promise.all([quizPromise, conversationPromise]);
+                console.log("Initial content loaded successfully.");
+            } catch (error) {
+                console.error("Failed to load initial content:", error);
+            } finally {
+                loadAds();
+            }
+        }
+
+        function loadAds() {
+            const adContainer = document.getElementById('ad-container');
+            if (!adContainer || adContainer.querySelector('.adsbygoogle')) return;
+
+            const adScript = document.createElement('script');
+            adScript.async = true;
+            adScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4590847087721354";
+            adScript.crossOrigin = "anonymous";
+            document.head.appendChild(adScript);
+
+            const adIns = document.createElement('ins');
+            adIns.className = 'adsbygoogle';
+            adIns.style.display = 'block';
+            adIns.setAttribute('data-ad-client', 'ca-pub-4590847087721354');
+            adIns.setAttribute('data-ad-slot', '9051563707');
+            adIns.setAttribute('data-ad-format', 'auto');
+            adIns.setAttribute('data-full-width-responsive', 'true');
+            
+            adContainer.appendChild(adIns);
+
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                console.log("AdSense script loaded and ad pushed.");
+            } catch (e) {
+                console.error("AdSense push error:", e);
+            }
+        }
 
         // --- Core State and Elements ---
         let score = 0;
         let currentQuizAnswer = null;
         let conversationHistory = [];
+        let isGenerating = false;
 
         const elements = {
             nepaliInput: document.getElementById('nepali-input'),
@@ -199,6 +287,7 @@
             grammarExplanation: document.getElementById('grammar-explanation'),
             pronunciationInput: document.getElementById('pronunciation-input'),
             pronounceBtn: document.getElementById('pronounce-btn'),
+            pronunciationError: document.getElementById('pronunciation-error'),
             quizArea: document.getElementById('quiz-area'),
             scoreDisplay: document.getElementById('score'),
             nextQuestionBtn: document.getElementById('next-question-btn'),
@@ -212,93 +301,125 @@
             loaderCulture: document.getElementById('loader-culture'),
             cultureExplanation: document.getElementById('culture-explanation'),
         };
-        
+
+        // --- Unified Gemini API Call Function ---
         async function callGeminiAPI(payload) {
-    try {
-        const response = await fetch("https://samir-worker.samirpuri204.workers.dev/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
+            if (isGenerating) return;
+            isGenerating = true;
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error("API Error: " + errorText);
+            const apiKey = "AIzaSyAKdw02umJFO8Jkr8OyJgjegRBT1TaeAm8"; // This is now correctly empty.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API Error: ${errorData?.error?.message || response.statusText}`);
+                }
+
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (!text) {
+                     throw new Error("The AI returned an empty response.");
+                }
+
+                if (payload.generationConfig?.responseMimeType === "application/json") {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        throw new Error("Received an invalid JSON response from the AI.");
+                    }
+                }
+                return { response: text };
+
+            } catch (error) {
+                console.error("callGeminiAPI Error:", error);
+                throw error;
+            } finally {
+                isGenerating = false;
+            }
+        }
+        
+        // --- UI Helpers ---
+        function showLoader(el) { el.classList.remove('hidden'); }
+        function hideLoader(el) { el.classList.add('hidden'); }
+        function disableButtons(btns) { btns.forEach(btn => btn.disabled = true); }
+        function enableButtons(btns) { btns.forEach(btn => btn.disabled = false); }
+        function displayError(container, message) {
+            container.innerHTML = `<div class="error-message">${message}</div>`;
+            container.classList.remove('hidden');
         }
 
-        const result = await response.json();
-
-        // Check if response structure contains parts[0].text
-        const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (!text) {
-            throw new Error("Invalid response structure");
-        }
-
-        // Try parsing as JSON; fallback to raw if parsing fails
-        try {
-            return JSON.parse(text);
-        } catch {
-            return { rawText: text };
-        }
-    } catch (error) {
-        console.error("callGeminiAPI Error:", error);
-        throw error;
-    }
-}
         // --- Translator Logic ---
         elements.translateBtn.addEventListener('click', async () => {
             const nepaliText = elements.nepaliInput.value.trim();
             if (!nepaliText) return;
-            elements.translatorOutput.classList.remove('hidden');
-            elements.loaderTranslator.classList.remove('hidden');
-            elements.resultsContainer.classList.add('hidden');
-            try {
-                const prompt = `You are a friendly English teacher for Nepali speakers. Analyze the Nepali sentence: "${nepaliText}". Provide: 1. A clear English translation. 2. A simple grammar breakdown in a mix of English and Nepali (using Devanagari script).`;
-                const schema = { type: "OBJECT", properties: { "english_translation": { "type": "STRING" }, "grammar_breakdown": { "type": "STRING" } }, required: ["english_translation", "grammar_breakdown"] };
-                
-                const aiResponse = await callGeminiAPI({ prompt, responseSchema: schema });
 
+            disableButtons([elements.translateBtn]);
+            showLoader(elements.loaderTranslator);
+            elements.resultsContainer.classList.add('hidden');
+
+            try {
+                const prompt = `Analyze the Nepali sentence: "${nepaliText}". Provide a response in JSON format with "english_translation" and "grammar_breakdown" (in English and Nepali).`;
+                const payload = {
+                    contents: [{ role: "user", parts: [{ text: prompt }] }],
+                    generationConfig: { responseMimeType: "application/json" }
+                };
+                const aiResponse = await callGeminiAPI(payload);
                 elements.englishTranslation.textContent = aiResponse.english_translation;
                 elements.grammarExplanation.innerHTML = aiResponse.grammar_breakdown;
-            } catch (error) {
-                console.error("Translator Error:", error);
-                elements.englishTranslation.textContent = "Sorry, an error occurred.";
-            } finally {
-                elements.loaderTranslator.classList.add('hidden');
                 elements.resultsContainer.classList.remove('hidden');
+            } catch (error) {
+                displayError(elements.resultsContainer, `Sorry, an error occurred. ${error.message}`);
+            } finally {
+                hideLoader(elements.loaderTranslator);
+                enableButtons([elements.translateBtn]);
             }
         });
 
         // --- Pronunciation Logic ---
         elements.pronounceBtn.addEventListener('click', () => {
             const textToSpeak = elements.pronunciationInput.value.trim();
+            elements.pronunciationError.classList.add('hidden');
             if (!textToSpeak) return;
+
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = /[a-zA-Z]/.test(textToSpeak) ? 'en-US' : 'ne-NP';
+                utterance.onerror = (event) => {
+                    elements.pronunciationError.textContent = `Sorry, could not speak '${event.utterance.text}'.`;
+                    elements.pronunciationError.classList.remove('hidden');
+                };
                 window.speechSynthesis.speak(utterance);
             } else {
-                alert("Sorry, your browser doesn't support text-to-speech.");
+                elements.pronunciationError.textContent = "Sorry, your browser doesn't support text-to-speech.";
+                elements.pronunciationError.classList.remove('hidden');
             }
         });
 
         // --- Quiz Logic ---
         async function generateQuizQuestion() {
+            disableButtons([elements.nextQuestionBtn]);
             elements.quizArea.innerHTML = '';
-            elements.loaderQuiz.classList.remove('hidden');
-            elements.nextQuestionBtn.disabled = true;
+            showLoader(elements.loaderQuiz);
+            
             try {
-                const prompt = "Generate a single multiple-choice English grammar quiz question. The question and options must be entirely in English. Provide a question, 4 options (one correct), and the index of the correct answer (0-3).";
-                const schema = { type: "OBJECT", properties: { "question": { "type": "STRING" }, "options": { "type": "ARRAY", "items": { "type": "STRING" } }, "answer_index": { "type": "NUMBER" } }, required: ["question", "options", "answer_index"] };
-                
-                const quizData = await callGeminiAPI({ prompt, responseSchema: schema });
-
+                const prompt = `Generate a multiple-choice English grammar/vocabulary question. Return JSON with "question", "options" (array of 4), and "answer_index" (0-3).`;
+                const payload = {
+                    contents: [{ role: "user", parts: [{ text: prompt }] }],
+                    generationConfig: { responseMimeType: "application/json" }
+                };
+                const quizData = await callGeminiAPI(payload);
                 currentQuizAnswer = quizData.answer_index;
                 
                 const questionEl = document.createElement('h3');
-                questionEl.className = 'text-lg font-semibold mb-3';
+                questionEl.className = 'font-semibold mb-3';
                 questionEl.textContent = quizData.question;
                 elements.quizArea.appendChild(questionEl);
 
@@ -313,25 +434,26 @@
                 });
                 elements.quizArea.appendChild(optionsEl);
             } catch (error) {
-                console.error("Quiz Error:", error);
-                elements.quizArea.innerHTML = `<p class="text-red-500">Could not load question.</p>`;
+                displayError(elements.quizArea, `Could not load question. ${error.message}`);
             } finally {
-                elements.loaderQuiz.classList.add('hidden');
-                elements.nextQuestionBtn.disabled = false;
+                hideLoader(elements.loaderQuiz);
+                enableButtons([elements.nextQuestionBtn]);
             }
         }
+
         function checkAnswer(selectedIndex, btn) {
-            document.querySelectorAll('.quiz-option').forEach(b => {
+            document.querySelectorAll('.quiz-option').forEach((b, index) => {
                 b.disabled = true;
-                b.classList.remove('hover:bg-indigo-100');
+                if (index === currentQuizAnswer) {
+                    b.style.borderColor = '#111827'; // Correct answer
+                    b.style.backgroundColor = '#f3f4f6';
+                }
             });
             if (selectedIndex === currentQuizAnswer) {
-                btn.classList.add('bg-green-500', 'text-white', 'border-green-500');
                 score++;
                 elements.scoreDisplay.textContent = score;
             } else {
-                btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
-                document.querySelectorAll('.quiz-option')[currentQuizAnswer].classList.add('bg-green-500', 'text-white', 'border-green-500');
+                btn.style.borderColor = '#b91c1c'; // Incorrect answer
             }
         }
         elements.nextQuestionBtn.addEventListener('click', generateQuizQuestion);
@@ -339,57 +461,59 @@
         // --- Conversation Logic ---
         function addChatMessage(message, sender) {
             const bubble = document.createElement('div');
-            bubble.className = `chat-bubble p-3 px-4 rounded-lg ${sender}`;
+            bubble.className = `chat-bubble p-3 px-4 ${sender}`;
             bubble.textContent = message;
             elements.chatWindow.appendChild(bubble);
             elements.chatWindow.scrollTop = elements.chatWindow.scrollHeight;
         }
 
-        elements.conversationScenario.addEventListener('change', async () => {
+        async function startInitialConversation() {
             const scenario = elements.conversationScenario.options[elements.conversationScenario.selectedIndex].text;
             elements.chatWindow.innerHTML = '';
-            addChatMessage(`Starting a conversation about ${scenario}. The AI will now greet you.`, 'ai');
+            addChatMessage(`Starting a new conversation about: ${scenario}.`, 'ai');
+            
+            disableButtons([elements.sendChatBtn]);
             elements.chatInput.disabled = true;
-            elements.sendChatBtn.disabled = true;
-            try {
-                const prompt = `You are a friendly English speaker. Start a conversation with a Nepali learner about "${scenario}". Begin with a simple greeting or question. Respond in a mix of simple English and Nepali.`;
-                const schema = { type: "OBJECT", properties: { "response": { "type": "STRING" } }, required: ["response"] };
-                
-                const aiResponse = await callGeminiAPI({ prompt, responseSchema: schema });
 
-                conversationHistory = [{role: 'user', parts: [{text: prompt}]}, {role: 'model', parts: [{text: aiResponse.response}]}];
-                addChatMessage(aiResponse.response, 'ai');
-                elements.chatInput.disabled = false;
-                elements.sendChatBtn.disabled = false;
+            try {
+                const prompt = `You are a friendly English conversation partner. Start a conversation about "${scenario}" with a simple, welcoming greeting.`;
+                conversationHistory = [{ role: 'user', parts: [{ text: prompt }] }];
+                const payload = { contents: conversationHistory };
+                const aiResponse = await callGeminiAPI(payload);
+                const firstResponse = aiResponse.response || "Hello! Let's talk. How are you?";
+                conversationHistory.push({ role: 'model', parts: [{ text: firstResponse }] });
+                addChatMessage(firstResponse, 'ai');
             } catch (error) {
-                console.error("Conversation Start Error:", error);
                 addChatMessage("Sorry, I can't start the conversation right now.", 'ai');
+            } finally {
+                enableButtons([elements.sendChatBtn]);
+                elements.chatInput.disabled = false;
+                elements.chatInput.focus();
             }
-        });
+        }
+        elements.conversationScenario.addEventListener('change', startInitialConversation);
         
         const handleChatSend = async () => {
             const userInput = elements.chatInput.value.trim();
-            if (!userInput) return;
+            if (!userInput || isGenerating) return;
             
-            conversationHistory.push({role: 'user', parts: [{text: userInput}]});
             addChatMessage(userInput, 'user');
+            conversationHistory.push({ role: 'user', parts: [{ text: userInput }] });
             elements.chatInput.value = '';
+            disableButtons([elements.sendChatBtn]);
             elements.chatInput.disabled = true;
-            elements.sendChatBtn.disabled = true;
-            
+
             try {
-                const schema = { type: "OBJECT", properties: { "response": { "type": "STRING" } }, required: ["response"]};
-                const aiResponse = await callGeminiAPI({ conversationHistory: conversationHistory, responseSchema: schema });
-                
-                const aiText = aiResponse.response;
-                conversationHistory.push({role: 'model', parts: [{text: aiText}]});
+                const payload = { contents: conversationHistory };
+                const aiResponse = await callGeminiAPI(payload);
+                const aiText = aiResponse.response || "I'm not sure how to respond.";
+                conversationHistory.push({ role: 'model', parts: [{ text: aiText }] });
                 addChatMessage(aiText, 'ai');
             } catch (error) {
-                console.error("Chat Error:", error);
-                addChatMessage("Sorry, I had a problem responding. Please try again.", 'ai');
+                addChatMessage("Sorry, I had a problem responding.", 'ai');
             } finally {
+                enableButtons([elements.sendChatBtn]);
                 elements.chatInput.disabled = false;
-                elements.sendChatBtn.disabled = false;
                 elements.chatInput.focus();
             }
         };
@@ -400,26 +524,31 @@
         elements.getCultureBtn.addEventListener('click', async () => {
             const phrase = elements.cultureInput.value.trim();
             if (!phrase) return;
-            elements.loaderCulture.classList.remove('hidden');
+
+            disableButtons([elements.getCultureBtn]);
+            showLoader(elements.loaderCulture);
             elements.cultureExplanation.classList.add('hidden');
+
             try {
-                const prompt = `As an English teacher for Nepali speakers, explain the cultural context, meaning, and usage of the English phrase: "${phrase}". Explain in a simple mix of English and Nepali.`;
-                const schema = { type: "OBJECT", properties: { "explanation": { "type": "STRING" } }, required: ["explanation"]};
-
-                const aiResponse = await callGeminiAPI({ prompt, responseSchema: schema });
-
+                const prompt = `Explain the English phrase: "${phrase}" for a Nepali speaker. Return JSON with key "explanation".`;
+                const payload = {
+                    contents: [{ role: "user", parts: [{ text: prompt }] }],
+                    generationConfig: { responseMimeType: "application/json" }
+                };
+                const aiResponse = await callGeminiAPI(payload);
                 elements.cultureExplanation.innerHTML = aiResponse.explanation;
-            } catch (error) {
-                console.error("Culture Error:", error);
-                elements.cultureExplanation.innerHTML = `<p class="text-red-500">Sorry, an error occurred.</p>`;
-            } finally {
-                elements.loaderCulture.classList.add('hidden');
                 elements.cultureExplanation.classList.remove('hidden');
+            } catch (error) {
+                displayError(elements.cultureExplanation, `Sorry, an error occurred. ${error.message}`);
+            } finally {
+                hideLoader(elements.loaderCulture);
+                enableButtons([elements.getCultureBtn]);
             }
         });
     </script>
 </body>
 </html>
+
 
 
 
