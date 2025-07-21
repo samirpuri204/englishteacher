@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="google-adsense-account" content="ca-pub-4590847087721354">
@@ -8,15 +8,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.320.0/dist/umd/lucide.min.js"></script>
     <style>
         body {
-            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #f8f9fa;
             color: #111827;
         }
-        .devanagari { font-family: 'Noto Sans Devanagari', sans-serif; }
         
         .btn-primary {
             display: inline-flex;
@@ -124,7 +123,7 @@
                     Revolutionizing English Learning <br> with AI-powered Tools
                 </h1>
                 <p class="max-w-2xl mx-auto text-slate-600 text-lg mb-8">
-                    From grammar and translation to conversational practice, our toolkit provides everything you need to master English, tailored for Nepali speakers.
+                    From grammar and translation to conversational practice, our toolkit provides everything you need to master English.
                 </p>
                 <div class="flex justify-center items-center gap-4">
                      <a href="#tools" class="btn-primary">
@@ -147,16 +146,16 @@
                 <!-- Translator Tool -->
                 <div class="tool-card lg:col-span-2">
                     <div class="tool-header"><i data-lucide="languages"></i><h2>Translator</h2></div>
-                    <textarea id="nepali-input" class="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 devanagari" rows="4" placeholder="नेपालीमा वाक्य लेख्नुहोस्..."></textarea>
+                    <textarea id="nepali-input" class="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500" rows="4" placeholder="Write a sentence to translate..."></textarea>
                     <button id="translate-btn" class="w-full mt-3 bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center gap-2 disabled:bg-slate-400"><i data-lucide="sparkles"></i>Analyze with AI</button>
                     <div id="translator-output" class="mt-4">
                         <div id="loader-translator" class="flex justify-center py-4 hidden"><div class="loader"></div></div>
                         <div id="results-container" class="space-y-4">
-                            <h4 class="font-semibold">English Translation</h4>
-                            <p id="english-translation" class="text-lg bg-slate-50 p-3 rounded-md">My name is Samir.</p>
-                            <h4 class="font-semibold">Grammar Breakdown (व्याकरण विश्लेषण)</h4>
+                            <h4 class="font-semibold">Translation</h4>
+                            <p id="english-translation" class="text-lg bg-slate-50 p-3 rounded-md">This is an example translation.</p>
+                            <h4 class="font-semibold">Grammar Breakdown</h4>
                             <div id="grammar-explanation" class="text-sm bg-slate-50 p-3 rounded-md prose">
-                                This is a simple declarative sentence. <br> - <strong>My name</strong> (मेरो नाम) - Subject <br> - <strong>is</strong> (हो) - Verb <br> - <strong>Samir</strong> (समिर) - Object
+                                This is a simple declarative sentence. <br> - <strong>This</strong> - Subject <br> - <strong>is</strong> - Verb <br> - <strong>an example</strong> - Object
                             </div>
                         </div>
                     </div>
@@ -203,7 +202,7 @@
                          <option value="making_friends">Making Friends</option>
                     </select>
                     <div id="chat-window" class="h-80 border rounded-lg p-4 overflow-y-auto flex flex-col gap-4 bg-slate-50 mb-3">
-                         <div class="text-center text-slate-500 devanagari">परिदृश्य छान्नुहोस् र कुराकानी सुरु गर्नुहोस्।</div>
+                         <div class="text-center text-slate-500">Select a scenario to start a conversation.</div>
                     </div>
                     <div class="flex gap-2">
                          <input type="text" id="chat-input" class="w-full p-3 border border-slate-200 rounded-lg" placeholder="Type your response..." disabled>
@@ -217,7 +216,7 @@
                 <h2 class="text-2xl font-bold text-slate-800 mb-3">How Our AI Tools Work</h2>
                 <p class="text-slate-600 mb-4">This page provides several AI-powered tools to help you master English. Here’s how to get the most out of them:</p>
                 <ul class="list-disc list-inside space-y-2 text-slate-600">
-                    <li><strong>Translator:</strong> Type a sentence in Nepali to see its English translation and a detailed grammar breakdown. This helps you understand sentence structure.</li>
+                    <li><strong>Translator:</strong> Type a sentence to see its translation and a detailed grammar breakdown. This helps you understand sentence structure.</li>
                     <li><strong>Quiz:</strong> Test your knowledge with an endless supply of grammar and vocabulary questions. A great way to learn and track your progress!</li>
                     <li><strong>Conversations:</strong> Practice real-world dialogues with an AI partner. Choose a scenario like ordering coffee or a job interview to build your confidence.</li>
                 </ul>
@@ -307,7 +306,7 @@
             if (isGenerating) return;
             isGenerating = true;
 
-            const apiKey = "AIzaSyAKdw02umJFO8Jkr8OyJgjegRBT1TaeAm8"; // This is now correctly empty.
+            const apiKey = "AIzaSyAKdw02umJFO8Jkr8OyJgjegRBT1TaeAm8"; // API key is handled by the environment
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
             try {
@@ -358,21 +357,21 @@
 
         // --- Translator Logic ---
         elements.translateBtn.addEventListener('click', async () => {
-            const nepaliText = elements.nepaliInput.value.trim();
-            if (!nepaliText) return;
+            const textToTranslate = elements.nepaliInput.value.trim();
+            if (!textToTranslate) return;
 
             disableButtons([elements.translateBtn]);
             showLoader(elements.loaderTranslator);
             elements.resultsContainer.classList.add('hidden');
 
             try {
-                const prompt = `Analyze the Nepali sentence: "${nepaliText}". Provide a response in JSON format with "english_translation" and "grammar_breakdown" (in English and Nepali).`;
+                const prompt = `Analyze the sentence: "${textToTranslate}". Provide a response in JSON format with "translation" and "grammar_breakdown".`;
                 const payload = {
                     contents: [{ role: "user", parts: [{ text: prompt }] }],
                     generationConfig: { responseMimeType: "application/json" }
                 };
                 const aiResponse = await callGeminiAPI(payload);
-                elements.englishTranslation.textContent = aiResponse.english_translation;
+                elements.englishTranslation.textContent = aiResponse.translation;
                 elements.grammarExplanation.innerHTML = aiResponse.grammar_breakdown;
                 elements.resultsContainer.classList.remove('hidden');
             } catch (error) {
@@ -391,7 +390,7 @@
 
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang = /[a-zA-Z]/.test(textToSpeak) ? 'en-US' : 'ne-NP';
+                utterance.lang = 'en-US';
                 utterance.onerror = (event) => {
                     elements.pronunciationError.textContent = `Sorry, could not speak '${event.utterance.text}'.`;
                     elements.pronunciationError.classList.remove('hidden');
@@ -530,7 +529,7 @@
             elements.cultureExplanation.classList.add('hidden');
 
             try {
-                const prompt = `Explain the English phrase: "${phrase}" for a Nepali speaker. Return JSON with key "explanation".`;
+                const prompt = `Explain the English phrase: "${phrase}". Return JSON with key "explanation".`;
                 const payload = {
                     contents: [{ role: "user", parts: [{ text: prompt }] }],
                     generationConfig: { responseMimeType: "application/json" }
@@ -548,6 +547,7 @@
     </script>
 </body>
 </html>
+
 
 
 
